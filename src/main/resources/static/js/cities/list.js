@@ -1,24 +1,25 @@
 // Manejar el cambio de tamaño de página
-document.addEventListener('DOMContentLoaded', function () {
-	const pageSizeSelect = document.getElementById('pageSizeSelect');
+const pageSizeSelect = document.getElementById('pageSizeSelect');
+// Confirmación de eliminación con Bootbox (usando JavaScript nativo para los eventos)
+const deleteButtons = document.querySelectorAll('.btn-delete');
 
-	if (pageSizeSelect) {
-		pageSizeSelect.addEventListener('change', function () {
-			const newSize = this.value;
-			const url = new URL(window.location.href);
-			url.searchParams.set('size', newSize);
-			url.searchParams.set('page', '0');
-			window.location.href = url.toString();
-		});
-	}
+if (pageSizeSelect) {
+	// Se mantiene function() porque necesitamos 'this' para obtener el valor del select
+	pageSizeSelect.addEventListener('change', function () {
+		const newSize = this.value;
+		const url = new URL(window.location.href);
+		url.searchParams.set('size', newSize);
+		url.searchParams.set('page', '0');
+		window.location.href = url.toString();
+	});
+}
 
-	// Confirmación de eliminación con Bootbox (requiere jQuery y Bootbox cargados)
-	if (typeof $ !== 'undefined' && $.fn.bootbox) {
-		$('.btn-delete').on('click', function (e) {
-			e.preventDefault();
-			const $link = $(this);
-			const deleteUrl = $link.attr('href');
-			const cityName = $link.data('city');
+deleteButtons.forEach(button => {
+	button.addEventListener('click', (e) => {
+		e.preventDefault();
+		const link = e.currentTarget; // Elemento que disparó el evento (el enlace/botón)
+		const deleteUrl = link.getAttribute('href');
+		const cityName = link.dataset.city;
 
 			bootbox.confirm({
 				title: "Confirmar eliminación",
@@ -33,13 +34,11 @@ document.addEventListener('DOMContentLoaded', function () {
 						className: 'btn-danger'
 					}
 				},
-				callback: function (result) {
+				callback: (result) => {
 					if (result) {
 						window.location.href = deleteUrl;
 					}
 				}
 			});
-		});
-	}
-
+	});
 });
