@@ -1,32 +1,40 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>Formulario Ciudad</title>
+	<!-- Bootstrap 5 + Iconos -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<!-- Flatpickr CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+	<!-- Estilos personalizados para el formulario -->
+	<link rel="stylesheet" th:href="@{/css/cities/form.css}">
 </head>
 <body class="container mt-4">
 
-<!-- Título dinámico según creación o edición -->
 <h2 th:text="${cityRequest.cityId == null} ? 'Nueva Ciudad' : 'Editar Ciudad'"></h2>
 
-<!-- Mostrar mensajes flash (se pasan mediante RedirectAttributes) -->
+<!-- Mensajes flash -->
 <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
 <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
-<!-- Formulario con Thymeleaf y validación -->
-<form th:action="@{/cities}" th:object="${cityRequest}" method="post">
-	<input type="hidden" th:field="*{cityId}"/>
+<form th:action="@{/cities}" th:object="${cityRequest}" method="post" novalidate>
+	<input id="cityId" type="hidden" th:field="*{cityId}"/>
 
+	<!-- Nombre de la ciudad -->
 	<div class="mb-3">
-		<label class="form-label">Nombre de la ciudad</label>
-		<input type="text" th:field="*{city}" class="form-control"
+		<label class="form-label" for="city">Nombre de la ciudad:</label>
+		<input id="city" type="text" th:field="*{city}" class="form-control"
 		       th:classappend="${#fields.hasErrors('city')} ? 'is-invalid' : ''"/>
 		<div class="invalid-feedback" th:errors="*{city}">Error en el nombre</div>
 	</div>
 
+	<!-- País (select) -->
 	<div class="mb-3">
-		<label class="form-label">País</label>
-		<select th:field="*{countryId}" class="form-select"
+		<label class="form-label" for="countryId">País:</label>
+		<select id="countryId" th:field="*{countryId}" class="form-select"
 		        th:classappend="${#fields.hasErrors('countryId')} ? 'is-invalid' : ''">
 			<option value="">Seleccione un país</option>
 			<option th:each="c : ${countries}"
@@ -36,16 +44,37 @@
 		<div class="invalid-feedback" th:errors="*{countryId}">Error en país</div>
 	</div>
 
+	<!-- Fecha de actualización (Flatpickr) -->
 	<div class="mb-3">
-		<label class="form-label">Fecha de actualización</label>
-		<input type="datetime-local" th:field="*{lastUpdate}" class="form-control"
-		       th:classappend="${#fields.hasErrors('lastUpdate')} ? 'is-invalid' : ''"/>
-		<div class="invalid-feedback" th:errors="*{lastUpdate}">Error en fecha</div>
+		<label class="form-label" for="date">Fecha de actualización:</label>
+		<div class="input-group">
+			<input id="date" type="text"
+			       th:field="*{lastUpdate}"
+			       th:value="${cityRequest.lastUpdate != null} ? ${#temporals.format(cityRequest.lastUpdate, 'yyyy-MM-dd HH:mm')} : ''"
+			       class="form-control datetime-picker"
+			       placeholder="Seleccionar fecha y hora"
+			       th:classappend="${#fields.hasErrors('lastUpdate')} ? 'is-invalid' : ''"/>
+			<span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+			<div class="invalid-feedback" th:errors="*{lastUpdate}">Error en fecha</div>
+		</div>
 	</div>
 
-	<button type="submit" class="btn btn-primary">Guardar</button>
-	<a th:href="@{/cities}" class="btn btn-secondary">Cancelar</a>
+	<!-- Botones de acción -->
+	<div class="form-actions">
+		<button type="submit" class="btn btn-primary">
+			<i class="bi bi-database-fill-add"></i> Guardar
+		</button>
+		<a th:href="@{/cities}" class="btn btn-secondary">
+			<i class="bi bi-x-circle"></i> Cancelar
+		</a>
+	</div>
 </form>
+
+<!-- Flatpickr JS y localización en español -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+<!-- Script personalizado para el formulario -->
+<script th:src="@{/js/cities/form.js}"></script>
 
 </body>
 </html>

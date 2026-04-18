@@ -1,0 +1,29 @@
+/* Estilos específicos para el formulario de ciudad */
+
+/* Ajustar espaciado del contenedor del formulario */
+form {
+	margin-top: 1.5rem;
+}
+
+/* Hacer que el input de fecha con grupo de icono se vea consistente */
+.input-group .form-control.datetime-picker {
+	border-right: none;
+}
+
+.input-group .input-group-text {
+	background-color: #f8f9fa;
+	border-left: none;
+}
+
+/* Mejorar presentación de mensajes de error */
+.invalid-feedback {
+	font-size: 0.875rem;
+	color: #dc3545;
+}
+
+/* Centrar el botón Guardar y Cancelar */
+.form-actions {
+	display: flex;
+	gap: 0.5rem;
+	margin-top: 1.5rem;
+}

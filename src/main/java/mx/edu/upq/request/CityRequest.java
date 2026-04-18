@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -31,6 +32,7 @@ public class CityRequest implements Serializable {
 
 	@NotNull(message = "La fecha de actualización no puede ser nula")
 	@PastOrPresent(message = "La fecha debe ser presente o pasada")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime lastUpdate;
 
 	@NotNull(message = "El país es obligatorio")

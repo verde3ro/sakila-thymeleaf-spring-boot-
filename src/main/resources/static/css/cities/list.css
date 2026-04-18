@@ -1,0 +1,23 @@
+.table-actions {
+	width: 1%;
+	white-space: nowrap;
+	text-align: center;
+}
+
+.table-actions .btn {
+	margin: 0 2px;
+}
+
+/* Espaciado extra en móviles para los botones de paginación */
+@media (max-width: 576px) {
+	.pagination .page-link {
+		padding: 0.25rem 0.5rem;
+		font-size: 0.875rem;
+	}
+}
+
+/* Centrar paginación y dar margen inferior */
+.pagination {
+	justify-content: center;
+	margin-bottom: 1rem;
+}
